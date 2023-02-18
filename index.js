@@ -24,6 +24,15 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+// unix time API endpoint
+app.get("/api/:unix([0-9]+)", (req, res) => {
+  resObj = {unix: parseInt(req.params.unix), utc: null}
+  // convert unix time to utc
+  let date = new Date(parseInt(req.params.unix));
+  resObj.utc = date.toUTCString();
+  res.json(resObj)
+});
+
 
 
 // listen for requests :)

@@ -33,6 +33,17 @@ app.get("/api/:unix([0-9]+)", (req, res) => {
   res.json(resObj)
 });
 
+// utc time api endpoint
+app.get("/api/:date", (req, res) => {
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+  
+  if(!dateRegex.test(req.params.date)){
+    res.status(400).json({error: 'Invalid date format, use yyyy-mm-dd'});
+  } else {
+    let resObj = {unix: new Date(req.params.date).getTime(), utc: new Date(req.params.date).toUTCString()}
+    res.json(resObj)
+  }
+});
 
 
 // listen for requests :)

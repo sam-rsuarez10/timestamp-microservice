@@ -37,13 +37,19 @@ app.get("/api/:unix([0-9]+)", (req, res) => {
 app.get("/api/:date", (req, res) => {
   const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
   
-  if(!dateRegex.test(req.params.date)){
-    res.status(400).json({error: 'Invalid date format, use yyyy-mm-dd'});
+  if(!dateRegex.test(req.params.date) && isNaN(Date.parse(req.params.date))){
+    res.status(400).json({error: 'Invalid Date'});
   } else {
     let resObj = {unix: new Date(req.params.date).getTime(), utc: new Date(req.params.date).toUTCString()}
     res.json(resObj)
   }
 });
+
+// empty api endpoint
+app.get("/api/", (req, res) => {
+  currentDate = new Date();
+  res.json({unix: currentDate.getTime(), utc: currentDate.toUTCString()});
+})
 
 
 // listen for requests :)
